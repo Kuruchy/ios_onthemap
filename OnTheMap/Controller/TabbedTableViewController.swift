@@ -76,6 +76,9 @@ extension TabbedTableViewController {
                 }
             })
         }
+        
+        // Deselect the selected row here so that it doesn't remain in the "Selected State"
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

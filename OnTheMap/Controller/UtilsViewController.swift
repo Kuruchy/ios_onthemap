@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 /// Adds Utils to UIViewController
 extension UIViewController {

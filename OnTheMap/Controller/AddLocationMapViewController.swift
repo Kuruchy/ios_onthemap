@@ -14,7 +14,6 @@ import MapKit
 class AddLocationMapViewController: UIViewController {
     
     // MARK: Properties
-    
     var location: String!
     var link: String!
     
@@ -27,6 +26,7 @@ class AddLocationMapViewController: UIViewController {
     // MARK: Outlets
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: Actions
     
@@ -38,44 +38,32 @@ class AddLocationMapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.mapView.delegate = self
 
+        // Start animation
+        self.activityIndicator.startAnimating()
+        
         self.showAnnotationAndCenter()
     }
 
     /**
-     Creates an annotation with the location and link given by the user. Also it centers the map.
+     Creates an annotation with the latitude and longitude passed by AddLocationViewController. Also it centers the map.
      */
     func showAnnotationAndCenter() {
-        let geoCoder = CLGeocoder()
-        geoCoder.geocodeAddressString(location) { (placeMarks, error) in
-            
-            if error != nil {
-                self.createAndShowAlert("Couldn't get the location.")
-            } else {
-                if (placeMarks?.count == 0) {
-                    self.createAndShowAlert("Alert", "Location not found!", "OK")
-                } else {
-                    
-                    // Create the coordinate
-                    self.longitude = placeMarks![0].location?.coordinate.longitude
-                    self.latitude = placeMarks![0].location?.coordinate.latitude
-
-                    let locationCoordinate = CLLocationCoordinate2D(latitude: self.latitude!, longitude: self.longitude!)
-                    
-                    // Centering the Map
-                    let coordinateRegion = MKCoordinateRegion(center: locationCoordinate, span: MKCoordinateSpan(latitudeDelta: self.latitudeDelta, longitudeDelta: self.longitudeDelta))
-                    
-                    // Set the Point Annotation
-                    let pointAnnotation = MKPointAnnotation()
-                    pointAnnotation.coordinate = locationCoordinate
-                    
-                    // Update
-                    performUIUpdatesOnMain {
-                        self.mapView.region = coordinateRegion
-                        self.mapView.addAnnotation(pointAnnotation)
-                    }
-                }
-            }
+        
+        let locationCoordinate = CLLocationCoordinate2D(latitude: self.latitude!, longitude: self.longitude!)
+        
+        // Centering the Map
+        let coordinateRegion = MKCoordinateRegion(center: locationCoordinate, span: MKCoordinateSpan(latitudeDelta: self.latitudeDelta, longitudeDelta: self.longitudeDelta))
+        
+        // Set the Point Annotation
+        let pointAnnotation = MKPointAnnotation()
+        pointAnnotation.coordinate = locationCoordinate
+        
+        // Update
+        performUIUpdatesOnMain {
+            self.mapView.region = coordinateRegion
+            self.mapView.addAnnotation(pointAnnotation)
         }
     }
     
@@ -130,3 +118,14 @@ class AddLocationMapViewController: UIViewController {
     }
 }
 
+extension AddLocationMapViewController: MKMapViewDelegate {
+    
+    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
+        if (fullyRendered) {
+            performUIUpdatesOnMain {
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.isHidden = true
+            }
+        }
+    }
+}

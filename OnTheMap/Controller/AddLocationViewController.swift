@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 class AddLocationViewController: UIViewController {
     
@@ -55,18 +56,32 @@ class AddLocationViewController: UIViewController {
             return
         }
         
-        // Send Data to Add Location Map View
-        let viewController = self.storyboard!.instantiateViewController(withIdentifier: "AddLocationMapViewController") as! AddLocationMapViewController
-        viewController.location = locationEditText.text!
-        var url = linkEditText.text!
-        if (!url.contains("http")){
-            // Add http header
-            url = String(format:"https://%@", url)
+        // Try to geocoder the location
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(locationEditText.text!) { (placeMarks, error) in
+            if error != nil {
+                self.createAndShowAlert("Couldn't get the location.")
+            } else {
+                if (placeMarks?.count == 0) {
+                    self.createAndShowAlert("Alert", "Location not found!", "OK")
+                } else {
+                    // Send Data to Add Location Map View
+                    let viewController = self.storyboard!.instantiateViewController(withIdentifier: "AddLocationMapViewController") as! AddLocationMapViewController
+                    viewController.location = self.locationEditText.text!
+                    viewController.longitude = placeMarks![0].location?.coordinate.longitude
+                    viewController.latitude = placeMarks![0].location?.coordinate.latitude
+                    var url = self.linkEditText.text!
+                    if (!url.contains("http")){
+                        // Add http header
+                        url = String(format:"https://%@", url)
+                    }
+                    viewController.link = url
+                    
+                    // Present the View
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                }
+            }
         }
-        viewController.link = url
-        
-        // Present the View
-        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     @IBAction func onCancelPressed(_ sender: Any) {
