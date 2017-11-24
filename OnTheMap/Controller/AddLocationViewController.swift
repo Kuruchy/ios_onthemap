@@ -19,6 +19,7 @@ class AddLocationViewController: UIViewController {
     
     @IBOutlet weak var locationEditText: UITextField!
     @IBOutlet weak var linkEditText: UITextField!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: Lifecycle
     
@@ -56,14 +57,19 @@ class AddLocationViewController: UIViewController {
             return
         }
         
+        // Start animation
+        self.activityIndicator.startAnimating()
+        
         // Try to geocoder the location
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(locationEditText.text!) { (placeMarks, error) in
             if error != nil {
                 self.createAndShowAlert("Couldn't get the location.")
+                self.activityIndicator.stopAnimating()
             } else {
                 if (placeMarks?.count == 0) {
                     self.createAndShowAlert("Alert", "Location not found!", "OK")
+                    self.activityIndicator.stopAnimating()
                 } else {
                     // Send Data to Add Location Map View
                     let viewController = self.storyboard!.instantiateViewController(withIdentifier: "AddLocationMapViewController") as! AddLocationMapViewController
@@ -76,6 +82,7 @@ class AddLocationViewController: UIViewController {
                         url = String(format:"https://%@", url)
                     }
                     viewController.link = url
+                    self.activityIndicator.stopAnimating()
                     
                     // Present the View
                     self.navigationController?.pushViewController(viewController, animated: true)

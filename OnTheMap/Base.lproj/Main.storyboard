@@ -286,6 +286,10 @@
                                     <constraint firstAttribute="width" secondItem="ehB-cH-hOp" secondAttribute="height" multiplier="1:1" id="xBx-R6-eHw"/>
                                 </constraints>
                             </imageView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="R6o-PE-Tbo" userLabel="Refresh Activity Indicator">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -307,6 +311,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="R6o-PE-Tbo" id="qwQ-kA-4Ps"/>
                         <outlet property="linkEditText" destination="9Pz-YU-qie" id="6fC-9A-O10"/>
                         <outlet property="locationEditText" destination="CP1-be-aDh" id="Amw-82-XyV"/>
                         <segue destination="87H-x6-Vf7" kind="show" id="yX9-3z-hrN"/>
@@ -391,25 +396,19 @@
                                     <action selector="onFinishPressed:" destination="87H-x6-Vf7" eventType="touchUpInside" id="d45-cU-dGv"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ue4-sp-jjl" userLabel="Refresh Activity Indicator">
-                                <rect key="frame" x="177" y="355" width="20" height="20"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6qz-5d-51S" firstAttribute="top" secondItem="06L-N5-QOQ" secondAttribute="bottom" id="0oa-fR-1e0"/>
                             <constraint firstItem="OaR-l7-VO4" firstAttribute="top" secondItem="1t9-HS-LPb" secondAttribute="bottom" constant="50" id="Uf1-Ye-1Hk"/>
-                            <constraint firstItem="ue4-sp-jjl" firstAttribute="centerX" secondItem="6qz-5d-51S" secondAttribute="centerX" id="YoY-Ua-7lI"/>
                             <constraint firstItem="6qz-5d-51S" firstAttribute="leading" secondItem="CT2-jp-gqb" secondAttribute="leading" id="egb-fh-iz2"/>
                             <constraint firstAttribute="trailing" secondItem="6qz-5d-51S" secondAttribute="trailing" id="hZQ-MU-PIb"/>
                             <constraint firstItem="1t9-HS-LPb" firstAttribute="centerX" secondItem="6qz-5d-51S" secondAttribute="centerX" id="oTI-c4-WDC"/>
-                            <constraint firstItem="ue4-sp-jjl" firstAttribute="centerY" secondItem="6qz-5d-51S" secondAttribute="centerY" id="rtc-gQ-hLM"/>
                             <constraint firstItem="OaR-l7-VO4" firstAttribute="top" secondItem="6qz-5d-51S" secondAttribute="bottom" id="y45-QY-kag"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="icon_mapview-deselected" selectedImage="icon_mapview-selected" id="e4T-ZW-r0w"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="ue4-sp-jjl" id="esG-Wi-T5q"/>
                         <outlet property="mapView" destination="6qz-5d-51S" id="jxw-aq-BiP"/>
                     </connections>
                 </viewController>

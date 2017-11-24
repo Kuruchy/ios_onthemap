@@ -26,7 +26,6 @@ class AddLocationMapViewController: UIViewController {
     // MARK: Outlets
     
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: Actions
     
@@ -38,11 +37,6 @@ class AddLocationMapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.mapView.delegate = self
-
-        // Start animation
-        self.activityIndicator.startAnimating()
-        
         self.showAnnotationAndCenter()
     }
 
@@ -114,18 +108,6 @@ class AddLocationMapViewController: UIViewController {
                     }
                 }
             })
-        }
-    }
-}
-
-extension AddLocationMapViewController: MKMapViewDelegate {
-    
-    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
-        if (fullyRendered) {
-            performUIUpdatesOnMain {
-                self.activityIndicator.stopAnimating()
-                self.activityIndicator.isHidden = true
-            }
         }
     }
 }
