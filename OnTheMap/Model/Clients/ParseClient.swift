@@ -17,9 +17,6 @@ class ParseClient : NSObject {
     // Shared session
     var session = URLSession.shared
     
-    var studentLocation : StudentLocation?
-    var studentLocations: [StudentLocation]?
-    
     // MARK: Shared Instance
     
     class func sharedInstance() -> ParseClient {
@@ -84,10 +81,9 @@ class ParseClient : NSObject {
                 
                 if let results = parsedResult?[GetStudentLocationJSONResponseKeys.StudentResult] as? [[String:AnyObject]] {
                     
-                    self.studentLocations = StudentLocation.PopulateStudentLocationsFromResults(results)
-                    
-                    SharedData.sharedInstance.studentLocations = self.studentLocations!
-                    completionHandlerLocations(self.studentLocations, nil)
+                    SharedData.sharedInstance.studentLocations = StudentLocation.PopulateStudentLocationsFromResults(results)
+
+                    completionHandlerLocations(SharedData.sharedInstance.studentLocations, nil)
                 } else {
                     completionHandlerLocations(nil, NSError(domain: "getStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations"]))
                 }
@@ -133,9 +129,8 @@ class ParseClient : NSObject {
                     
                     // It should return one StudentLocation
                     if (studentLocations.count > 0) {
-                        self.studentLocation = studentLocations[0]
-                        SharedData.sharedInstance.currentStudentLocation = self.studentLocation!
-                        completionHandlerLocation(self.studentLocation, nil)
+                        SharedData.sharedInstance.currentStudentLocation = studentLocations[0]
+                        completionHandlerLocation(SharedData.sharedInstance.currentStudentLocation, nil)
                     }
                 } else {
                     completionHandlerLocation(nil, NSError(domain: "getStudentLocation parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations"]))

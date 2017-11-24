@@ -38,8 +38,7 @@ class TapBarViewController: UITabBarController {
     }
     
     @IBAction func onAddPressed(_ sender: Any) {
-        let studentLocations = ParseClient.sharedInstance().studentLocations!
-        addStudentLocations(studentLocations)
+        addStudentLocations(SharedData.sharedInstance.studentLocations)
     }
     
     // MARK: Add Student Location
@@ -47,11 +46,9 @@ class TapBarViewController: UITabBarController {
     private func addStudentLocations(_ studentLocations: [StudentLocation]) {
         var isExist: Bool = false
         let currentUserUniqueKey = UdacityClient.sharedInstance().AccountKey
-        var currentStudent: StudentLocation?
         
         for studentLocation in studentLocations {
             if (studentLocation.UniqueKey == currentUserUniqueKey) {
-                currentStudent = studentLocation
                 isExist = true
                 break
             }

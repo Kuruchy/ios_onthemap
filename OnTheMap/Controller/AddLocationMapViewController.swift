@@ -81,7 +81,7 @@ class AddLocationMapViewController: UIViewController {
         
         
         // Is there already a studentLocation for this user stored in the server?
-        if let userStudentLocation = ParseClient.sharedInstance().studentLocation {
+        if let userStudentLocation = SharedData.sharedInstance.currentStudentLocation {
             
             studentLocation?.ObjectID = userStudentLocation.ObjectID
             
